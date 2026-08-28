@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     // 2. Fetch credentials explicitly matching the .env.local file
     const emailUser = process.env.EMAIL_USER?.trim();
     const emailPass = process.env.EMAIL_PASS?.replace(/\s/g, '');
-    const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+    const smtpHost = process.env.SMTP_HOST || 'smtp.zoho.com';
     const smtpPort = Number(process.env.SMTP_PORT) || 465;
 
     if (!emailUser || !emailPass) {

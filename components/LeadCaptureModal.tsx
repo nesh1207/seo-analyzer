@@ -80,7 +80,7 @@ export const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md">
       <div className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl sm:p-8">
-        
+
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -96,7 +96,7 @@ export const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({
             </div>
             <h3 className="mt-4 text-2xl font-extrabold text-white">Request Received!</h3>
             <p className="mt-2 text-xs text-zinc-300 leading-relaxed">
-              Thank you, <span className="font-semibold text-emerald-400">{formData.name}</span>! Our Zone SEO optimization specialists have received your website analysis ({targetUrl}) and will reach out to you within 24 hours.
+              Thank you, <span className="font-semibold text-emerald-400">{formData.name}</span>! Our SEO specialist will reach out to you soon.
             </p>
             <div className="mt-6">
               <button
