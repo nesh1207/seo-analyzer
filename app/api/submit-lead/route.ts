@@ -24,11 +24,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const recipientEmail = 'studentuse002@gmail.com';
+    const recipientEmail = process.env.RECIPIENT_EMAIL || 'contact@zoneseo.online';
 
     // 2. Fetch credentials explicitly matching the .env.local file
-    const emailUser = process.env.EMAIL_USER;
-    const emailPass = process.env.EMAIL_PASS;
+    const emailUser = process.env.EMAIL_USER?.trim();
+    const emailPass = process.env.EMAIL_PASS?.replace(/\s/g, '');
+    const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+    const smtpPort = Number(process.env.SMTP_PORT) || 465;
 
     if (!emailUser || !emailPass) {
       console.error('Missing EMAIL_USER or EMAIL_PASS in .env.local');
@@ -104,7 +106,7 @@ export async function POST(req: NextRequest) {
             </table>
 
             <div class="footer">
-              <p>© ${new Date().getFullYear()} Powered by Zone SEO Lead Engine</p>
+              <p>© ${new Date().getFullYear()} Powered by Zone SEO </p>
             </div>
           </div>
         </body>
@@ -113,9 +115,9 @@ export async function POST(req: NextRequest) {
 
     // 3. Direct Gmail SMTP Configuration
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
       auth: {
         user: emailUser,
         pass: emailPass,
@@ -133,7 +135,7 @@ export async function POST(req: NextRequest) {
       html: emailHtml,
     });
 
-    console.log('Live SMTP email sent successfully:', info.messageId);
+    console.log('Email sent successfully:', info.messageId);
 
     return NextResponse.json({
       success: true,
@@ -141,7 +143,7 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error: any) {
-    console.error('Error in /api/submit-lead:', error.message || error);
+    console.error('Mail error:', error.message || error);
     return NextResponse.json(
       { error: 'Failed to process lead submission.', details: error?.message },
       { status: 500 }
