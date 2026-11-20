@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Zap, ShieldCheck, Sparkles, Award } from 'lucide-react';
+import Image from 'next/image';
 
 interface HeaderProps {
   onReset?: () => void;
@@ -9,38 +9,50 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onReset }) => {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-zinc-800/60 bg-zinc-950/85 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <div 
+        {/* Logo + Brand */}
+        <div
           onClick={onReset}
           className="flex cursor-pointer items-center space-x-3 transition-opacity hover:opacity-90"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 p-0.5 shadow-lg shadow-emerald-500/20">
-            <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-zinc-950">
-              <Zap className="h-5 w-5 text-emerald-400" />
-            </div>
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl overflow-hidden border border-red-800/40 shadow-lg shadow-red-900/20 bg-zinc-900">
+            <Image
+              src="/logo.png"
+              alt="DInfinite Tech Services Logo"
+              width={44}
+              height={44}
+              className="object-contain"
+              priority
+            />
           </div>
           <div>
-            <div className="flex items-center space-x-2">
-              <span className="text-base font-bold tracking-tight text-white">
-                SEO Pulse<span className="text-emerald-400">Analyzer</span>
-              </span>
-              <span className="inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-400">
-                PRO AUDIT
-              </span>
-            </div>
-            <p className="hidden text-xs text-white sm:block font-medium">
-              Powered by Zone SEO
+            <span className="text-lg font-black tracking-tight text-white">
+              ZONE <span className="text-red-500">SEO</span>
+            </span>
+            <p className="hidden text-[10px] text-zinc-400 sm:block font-medium leading-none mt-0.5">
+              Powered by DInfinite Tech Services
             </p>
           </div>
         </div>
 
-        <div className="flex items-center space-x-3">
-          <div className="flex items-center space-x-2 text-xs text-white rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 font-semibold">
-            <Award className="h-4 w-4 text-emerald-400" />
-            <span>Powered by Zone SEO</span>
-          </div>
-        </div>
+        {/* Nav Links */}
+        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium text-zinc-400">
+          <a href="#services" className="hover:text-white transition-colors">Services</a>
+          <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
+          <a href="#education" className="hover:text-white transition-colors">Learn SEO</a>
+          <a href="#clients" className="hover:text-white transition-colors">Clients</a>
+        </nav>
+
+        {/* CTA */}
+        <a
+          href="https://wa.me/601111722010"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center space-x-2 rounded-xl bg-gradient-to-r from-red-600 to-red-500 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-red-600/30 hover:brightness-110 transition-all"
+        >
+          <span>Contact Us</span>
+        </a>
       </div>
     </header>
   );

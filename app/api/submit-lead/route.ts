@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const recipientEmail = process.env.RECIPIENT_EMAIL || 'contact@zoneseo.online';
+    const recipientEmail = process.env.RECIPIENT_EMAIL || 'studentuse002@gmail.com';
 
     // 2. Fetch credentials explicitly matching the .env.local file
     const emailUser = process.env.EMAIL_USER?.trim();

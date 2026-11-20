@@ -10,9 +10,15 @@ import { QuickWinsChecklist } from '@/components/QuickWinsChecklist';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 import { ReportExporter } from '@/components/ReportExporter';
 import { DottedBackground } from '@/components/ui/dotted-vignette-background';
+import { ServicesSection } from '@/components/ServicesSection';
+import { EducationSection } from '@/components/EducationSection';
+import { PricingSection } from '@/components/PricingSection';
+import { ClientShowcase } from '@/components/ClientShowcase';
+import { WhatsAppChat } from '@/components/WhatsAppChat';
+import { CursorTrail } from '@/components/CursorTrail';
 import { PageSpeedAnalysis } from '@/types/analyzer';
 import { getLetterGrade } from '@/lib/utils';
-import { AlertCircle, Zap, Sparkles, Award, ShieldCheck } from 'lucide-react';
+import { AlertCircle, Sparkles } from 'lucide-react';
 
 export default function Home() {
   const [analysisData, setAnalysisData] = useState<PageSpeedAnalysis | null>(null);
@@ -33,7 +39,6 @@ export default function Home() {
       });
 
       const delayPromise = new Promise((resolve) => setTimeout(resolve, 35000));
-
       const [res] = await Promise.all([apiPromise, delayPromise]);
 
       if (!res.ok) {
@@ -70,142 +75,134 @@ export default function Home() {
   const letterGradeInfo = getLetterGrade(overallAvg);
 
   return (
-    <DottedBackground
-      dotColor="#6ee7b7"
-      backgroundColor="#0f172a"
-      enableVignette={true}
-      vignetteColor="rgba(0,0,0,0.9)"
-      enableInnerGlow={true}
-      innerGlowColor="rgba(0,0,0,0.8)"
-      dotSize={2}
-      dotSpacing={10}
-      className="min-h-screen font-sans text-zinc-100 antialiased selection:bg-emerald-500 selection:text-zinc-950"
-    >
-      <div className="flex min-h-screen flex-col bg-transparent">
-        {/* Header with Zone SEO branding */}
-        <Header onReset={handleReset} />
+    <>
+      {/* Cursor Trail Effect */}
+      <CursorTrail />
 
-        <main className="flex-1 pb-20">
-          {/* Hero Section */}
-          <HeroSearch onAnalyze={handleAnalyze} isLoading={isLoading} />
+      {/* WhatsApp Chat Button */}
+      <WhatsAppChat />
 
-          {/* Error Alert Box */}
-          {errorMsg && (
-            <div className="mx-auto max-w-4xl px-4 py-4">
-              <div className="flex items-center space-x-3 rounded-2xl border border-rose-500/30 bg-rose-950/40 p-4 text-rose-300 shadow-xl backdrop-blur-md">
-                <AlertCircle className="h-5 w-5 flex-shrink-0 text-rose-400" />
-                <div className="flex-1 text-sm text-white">
-                  <span className="font-bold text-white">Analysis Failed: </span>
-                  {errorMsg}
+      <DottedBackground
+        dotColor="#dc2626"
+        backgroundColor="#09090b"
+        enableVignette={true}
+        vignetteColor="rgba(0,0,0,0.92)"
+        enableInnerGlow={true}
+        innerGlowColor="rgba(0,0,0,0.75)"
+        dotSize={1.5}
+        dotSpacing={12}
+        className="min-h-screen font-sans text-zinc-100 antialiased"
+      >
+        <div className="flex min-h-screen flex-col bg-transparent">
+          {/* Header */}
+          <Header onReset={handleReset} />
+
+          <main className="flex-1">
+            {/* Hero + Search */}
+            <HeroSearch onAnalyze={handleAnalyze} isLoading={isLoading} />
+
+            {/* Error */}
+            {errorMsg && (
+              <div className="mx-auto max-w-4xl px-4 py-4">
+                <div className="flex items-center space-x-3 rounded-2xl border border-rose-500/30 bg-rose-950/40 p-4 text-rose-300 shadow-xl backdrop-blur-md">
+                  <AlertCircle className="h-5 w-5 flex-shrink-0 text-rose-400" />
+                  <div className="flex-1 text-sm">
+                    <span className="font-bold text-white">Analysis Failed: </span>
+                    {errorMsg}
+                  </div>
+                  <button
+                    onClick={() => setErrorMsg(null)}
+                    className="rounded-lg border border-rose-500/30 bg-rose-900/40 px-3 py-1 text-xs font-semibold text-rose-200 hover:bg-rose-800/50"
+                  >
+                    Dismiss
+                  </button>
                 </div>
-                <button
-                  onClick={() => setErrorMsg(null)}
-                  className="rounded-lg border border-rose-500/30 bg-rose-900/40 px-3 py-1 text-xs font-semibold text-rose-200 hover:bg-rose-800/50"
-                >
-                  Dismiss
-                </button>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* 35-Second Heavy Lifting Loading State */}
-          {isLoading && (
-            <div className="px-4 py-8">
-              <LoadingSkeleton url={currentUrl} durationSeconds={35} />
-            </div>
-          )}
+            {/* Loading */}
+            {isLoading && (
+              <div className="px-4 py-8">
+                <LoadingSkeleton url={currentUrl} durationSeconds={35} />
+              </div>
+            )}
 
-          {/* Dashboard Results State */}
-          {analysisData && !isLoading && (
-            <div className="mx-auto max-w-7xl space-y-10 px-4 pt-4 sm:px-6 lg:px-8">
-              
-              {/* Top Toolbar / Exporter */}
-              <ReportExporter data={analysisData} />
-
-              {/* Score Dials & Letter Grade Card */}
-              <ScoreDials
-                scores={analysisData.scores}
-                passedCount={analysisData.audits.passedCount}
-                failedCount={analysisData.audits.failedCount}
-                url={analysisData.displayUrl}
-                strategy={analysisData.strategy}
-              />
-
-              {/* Core Web Vitals breakdown */}
-              <CoreWebVitals metrics={analysisData.metrics} />
-
-              {/* Detailed Diagnostics & Audit Tabs */}
-              <DiagnosticsTabs audits={analysisData.audits} />
-
-              {/* Local SEO Checklist & Lead Capture Form */}
-              <QuickWinsChecklist
-                targetUrl={analysisData.url}
-                grade={letterGradeInfo.grade}
-                overallScore={overallAvg}
-              />
-
-            </div>
-          )}
-
-          {/* Default View (before search) */}
-          {!analysisData && !isLoading && !errorMsg && (
-            <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-              {/* Checklist Preview */}
-              <div className="mb-10">
+            {/* Results Dashboard */}
+            {analysisData && !isLoading && (
+              <div className="mx-auto max-w-7xl space-y-10 px-4 pt-4 pb-20 sm:px-6 lg:px-8">
+                <ReportExporter data={analysisData} />
+                <ScoreDials
+                  scores={analysisData.scores}
+                  passedCount={analysisData.audits.passedCount}
+                  failedCount={analysisData.audits.failedCount}
+                  url={analysisData.displayUrl}
+                  strategy={analysisData.strategy}
+                />
+                <CoreWebVitals metrics={analysisData.metrics} />
+                <DiagnosticsTabs audits={analysisData.audits} />
                 <QuickWinsChecklist
-                  targetUrl="https://example.com"
-                  grade="A"
-                  overallScore={90}
+                  targetUrl={analysisData.url}
+                  grade={letterGradeInfo.grade}
+                  overallScore={overallAvg}
                 />
               </div>
+            )}
 
-              {/* Feature Highlights Grid */}
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-6 backdrop-blur-md">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    <Zap className="h-5 w-5" />
+            {/* Default Landing Page Sections (shown when no analysis) */}
+            {!analysisData && !isLoading && !errorMsg && (
+              <>
+                {/* Services */}
+                <ServicesSection />
+
+                {/* SEO Education */}
+                <EducationSection />
+
+                {/* Pricing */}
+                <PricingSection />
+
+                {/* Client Showcase */}
+                <ClientShowcase />
+              </>
+            )}
+          </main>
+
+          {/* Footer */}
+          <footer className="border-t border-zinc-800/60 bg-zinc-950/95 py-10 text-center text-xs text-zinc-500 backdrop-blur-md">
+            <div className="mx-auto max-w-7xl px-4">
+              {/* Footer Logo Row */}
+              <div className="flex flex-col items-center justify-between gap-6 sm:flex-row mb-6">
+                <div className="flex items-center space-x-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl overflow-hidden border border-red-800/40 bg-zinc-900">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/logo.png" alt="DInfinite Tech Services" className="h-9 w-9 object-contain" />
                   </div>
-                  <h3 className="mt-4 text-base font-bold text-white">Heavy Lifting Engine</h3>
-                  <p className="mt-2 text-xs text-white leading-relaxed font-normal">
-                    Deep scanning sequence crawling DOM structures, mobile responsiveness, and Core Web Vitals.
-                  </p>
+                  <div className="text-left">
+                    <p className="text-sm font-black text-white">ZONE <span className="text-red-500">SEO</span></p>
+                    <p className="text-[10px] text-zinc-500">Powered by DInfinite Tech Services</p>
+                  </div>
                 </div>
 
-                <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-6 backdrop-blur-md">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                    <Award className="h-5 w-5" />
-                  </div>
-                  <h3 className="mt-4 text-base font-bold text-white">Letter Grade System</h3>
-                  <p className="mt-2 text-xs text-white leading-relaxed font-normal">
-                    Instant Letter Grade evaluation (A, B, C, D) based on weighted performance and SEO rules.
-                  </p>
-                </div>
+                <nav className="flex flex-wrap justify-center gap-4 text-xs text-zinc-500">
+                  <a href="#services" className="hover:text-red-400 transition-colors">Services</a>
+                  <a href="#pricing" className="hover:text-red-400 transition-colors">Pricing</a>
+                  <a href="#education" className="hover:text-red-400 transition-colors">Learn SEO</a>
+                  <a href="#clients" className="hover:text-red-400 transition-colors">Clients</a>
+                  <a href="mailto:contact@zoneseo.online" className="hover:text-red-400 transition-colors">contact@zoneseo.online</a>
+                </nav>
 
-                <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-6 backdrop-blur-md">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                    <ShieldCheck className="h-5 w-5" />
-                  </div>
-                  <h3 className="mt-4 text-base font-bold text-white">Lead Capture & Expert Help</h3>
-                  <p className="mt-2 text-xs text-white leading-relaxed font-normal">
-                    Submit your report directly to Zone SEO specialists for professional Map Pack optimization.
-                  </p>
+                <div className="flex items-center space-x-1 text-xs text-zinc-600">
+                  <Sparkles className="h-3.5 w-3.5 text-red-600" />
+                  <span>Free SEO Audit Tool</span>
                 </div>
               </div>
-            </div>
-          )}
-        </main>
 
-        {/* Footer with "Powered by Zone SEO" */}
-        <footer className="border-t border-zinc-800/80 bg-zinc-950/90 py-8 text-center text-xs text-white backdrop-blur-md">
-          <div className="mx-auto max-w-7xl px-4 flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <p className="text-white font-medium">© {new Date().getFullYear()} SEO Pulse Analyzer. All rights reserved.</p>
-            <div className="flex items-center space-x-2 text-emerald-400 font-bold">
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>Powered by Zone SEO</span>
+              <div className="border-t border-zinc-800/60 pt-5">
+                <p>© {new Date().getFullYear()} ZONE SEO. All rights reserved. · Powered by DInfinite Tech Services · contact@zoneseo.online</p>
+              </div>
             </div>
-          </div>
-        </footer>
-      </div>
-    </DottedBackground>
+          </footer>
+        </div>
+      </DottedBackground>
+    </>
   );
 }

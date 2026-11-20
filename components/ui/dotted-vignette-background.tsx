@@ -75,8 +75,8 @@ export const DottedBackground: React.FC<DottedBackgroundProps> = ({
       if (mX >= 0 && mY >= 0) {
         const glowRadius = 180;
         const radialGlow = ctx.createRadialGradient(mX, mY, 0, mX, mY, glowRadius);
-        radialGlow.addColorStop(0, 'rgba(110, 231, 183, 0.15)');
-        radialGlow.addColorStop(0.5, 'rgba(52, 211, 153, 0.05)');
+        radialGlow.addColorStop(0, 'rgba(220, 38, 38, 0.18)');
+        radialGlow.addColorStop(0.5, 'rgba(185, 28, 28, 0.06)');
         radialGlow.addColorStop(1, 'transparent');
 
         ctx.fillStyle = radialGlow;
@@ -112,7 +112,7 @@ export const DottedBackground: React.FC<DottedBackgroundProps> = ({
           if (dist < spotlightRadius) {
             const factor = 1 - dist / spotlightRadius;
             currentSize = dotSize + factor * 2.5;
-            currentDotColor = factor > 0.5 ? '#34d399' : '#6ee7b7';
+            currentDotColor = factor > 0.5 ? '#ef4444' : '#dc2626';
           }
 
           ctx.fillStyle = currentDotColor;
@@ -138,7 +138,7 @@ export const DottedBackground: React.FC<DottedBackgroundProps> = ({
     <div className={`relative w-full h-full overflow-hidden ${className}`}>
       {/* Interactive Cursor Spotlight Glow Effect */}
       <div
-        className="pointer-events-none fixed z-30 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400/10 blur-2xl transition-transform duration-75 ease-out"
+        className="pointer-events-none fixed z-30 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600/10 blur-2xl transition-transform duration-75 ease-out"
         style={{
           left: `${mousePos.x}px`,
           top: `${mousePos.y}px`,

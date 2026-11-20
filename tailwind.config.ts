@@ -11,11 +11,12 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        vercel: {
-          dark: "#0a0a0a",
-          card: "#111111",
-          border: "#222222",
-          accent: "#0070f3",
+        brand: {
+          red: "#dc2626",
+          "red-light": "#ef4444",
+          "red-dark": "#b91c1c",
+          orange: "#ea580c",
+          "orange-light": "#f97316",
         },
       },
       fontFamily: {
@@ -28,12 +29,27 @@ const config: Config = {
         },
         pulseGlow: {
           "0%, 100%": { opacity: "0.4" },
-          "50%": { opacity: "0.8" },
+          "50%": { opacity: "0.9" },
+        },
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(6px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        slideUp: {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-1000px 0" },
+          "100%": { backgroundPosition: "1000px 0" },
         },
       },
       animation: {
         gauge: "gauge 1.5s ease-out forwards",
         glow: "pulseGlow 3s infinite ease-in-out",
+        "fade-in": "fadeIn 0.3s ease-out forwards",
+        "slide-up": "slideUp 0.5s ease-out forwards",
+        shimmer: "shimmer 2.5s infinite linear",
       },
     },
   },
